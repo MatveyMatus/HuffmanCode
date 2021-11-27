@@ -29,6 +29,10 @@ for(i in alph){
 	k++;
 }
 
+if (k == 1){
+	tree[0].code = '0';
+}
+
 let mar = 0;
 while (mar < k-1){
 	for(let t = 0; t < 2; t++){  
