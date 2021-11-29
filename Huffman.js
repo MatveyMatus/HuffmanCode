@@ -11,7 +11,7 @@ let fs = require('fs');
 let fat = new Array();
 let alph = new Array();
 let tree = new Array();
-let i = 0, k = 0, marker = 1;
+let i = 0, k = 0;
 
 inputData = fs.readFileSync(arg[2]);
 inputData = inputData.toString();
@@ -35,46 +35,30 @@ if (k == 1){
 
 let mar = 0;
 while (mar < k-1){
-	for(let t = 0; t < 2; t++){  
-		tree.sort(function(a,b) {
-			if (a.freq < b.freq)
-				return -1;
-			if (a.freq > b.freq) 
-				return 1;
-			if (a.freq == b.freq)
-				if (a.letter > b.letter)
-					return -1
-				if (a.letter < b.letter)
-					return 1
-			return 0;
-		});
-		if (tree[marker-1].used == false && tree[marker].used == false){
-			n = new Node(tree[marker-1].letter + tree[marker].letter, tree[marker-1].freq + tree[marker].freq, false, null, '');
-			tree.push(n);
-			fat.push(n);
-			tree[marker-1].father = tree[marker-1].letter + tree[marker].letter;
-			tree[marker].father = tree[marker-1].letter + tree[marker].letter;
-			tree[marker-1].used = true;
-			tree[marker].used = true;
-			
-		}
-		marker++;
+	let t1 = inputData.length;
+	let t2 = inputData.length;
+	for ( min_freq1 = 0; min_freq1 < tree.length; min_freq1++){
+		if(tree[i].freq <= t1 && tree[i].used == false)
+			t1 = tree[i].freq
 	}
+	tree[min_freq1].used = true;
+	for(min_freq2 = 0; min_freq2 < tree.length; min_freq2++){
+		if(tree[i].freq <= t2 && tree[i].used == false)
+			t2 = tree[i].freq;
+	}
+	tree[min_freq2].used = true; 
+	n = new Node(tree[num1].letter + tree[num2].letter, tree[num1].freq + tree[num2].freq, false, null, '');
+	tree.push(n);
+	fat.push(n);
+	tree[num1].father = tree[num1].letter + tree[num2].letter;
+	tree[num2].father = tree[num1].letter + tree[num2].letter;
 	mar++;
 }
 
-tree.sort(function(a,b){
-	if (a.freq < b.freq)
-		return 1;
-	if (a.freq > b.freq) 
-		return -1;
-	return 0;
-});
 
-
-for (cou1 = 0; cou1 < tree.length; cou1++){
-	for(leftBranch = 0; leftBranch < tree.length; leftBranch++){
-		for(rightBranch = 0; rightBranch < tree.length; rightBranch++){
+for (cou1 = tree.length-1; cou1 != -1; cou1--){
+	for(leftBranch = tree.length-1; leftBranch != -1; leftBranch--){
+		for(rightBranch = tree.length-1; rightBranch != -1; rightBranch--){
 			if ((tree[cou1].letter == tree[leftBranch].father) && (tree[cou1].letter == tree[rightBranch].father) && (leftBranch != rightBranch)){
 				tree[leftBranch].code = tree[cou1].code + '0';
 				tree[rightBranch].code = tree[cou1].code + '1';
@@ -87,14 +71,6 @@ for (j = 0; j < tree.length; j++){
 	if (tree[j].letter.length > 1)
 		tree = tree.filter(num => num.letter.length == 1);
 }	
-
-tree.sort(function(a,b){
-	if (a.father.length < b.father.length)
-		return 1;
-	if (a.father.length > b.father.length) 
-		return -1;
-	return 0;
-});
 console.log(tree);
 
 let enStr = '';
