@@ -33,25 +33,29 @@ if (k == 1){
 	tree[0].code = '0';
 }
 
-let mar = 0;
+let mar = 0, min_freq1 = 0, min_freq2 = 0;
 while (mar < k-1){
 	let t1 = inputData.length;
 	let t2 = inputData.length;
-	for ( min_freq1 = 0; min_freq1 < tree.length; min_freq1++){
-		if(tree[i].freq <= t1 && tree[i].used == false)
+	for (i = 0; i < tree.length; i++){
+		if(tree[i].freq <= t1 && tree[i].used == false){
 			t1 = tree[i].freq
+			min_freq1 = i;
+		}
 	}
 	tree[min_freq1].used = true;
-	for(min_freq2 = 0; min_freq2 < tree.length; min_freq2++){
-		if(tree[i].freq <= t2 && tree[i].used == false)
+	for(i = 0; i < tree.length; i++){
+		if(tree[i].freq <= t2 && tree[i].used == false){
 			t2 = tree[i].freq;
+			min_freq2 = i;
+		}
 	}
 	tree[min_freq2].used = true; 
-	n = new Node(tree[num1].letter + tree[num2].letter, tree[num1].freq + tree[num2].freq, false, null, '');
+	n = new Node(tree[min_freq1].letter + tree[min_freq2].letter, tree[min_freq1].freq + tree[min_freq2].freq, false, null, '');
 	tree.push(n);
 	fat.push(n);
-	tree[num1].father = tree[num1].letter + tree[num2].letter;
-	tree[num2].father = tree[num1].letter + tree[num2].letter;
+	tree[min_freq1].father = tree[min_freq1].letter + tree[min_freq2].letter;
+	tree[min_freq2].father = tree[min_freq1].letter + tree[min_freq2].letter;
 	mar++;
 }
 
